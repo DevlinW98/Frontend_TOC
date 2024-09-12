@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ImageLoader from './Component/image_loader';
 
 function DataList() {
     const [dataM, setData] = useState([]);
@@ -9,6 +10,47 @@ function DataList() {
     const [itemsPerPage, setItemsPerPage] = useState(24);
     const [status, setStatus] = useState(0);
     const [nowScraping, setNowScraping] = useState(false);
+
+    const Cheack_Status = async() => {
+        while(status === 0) {
+            try {
+                const response = await fetch(`https://backend-toc.onrender.com/status`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json(); 
+                setStatus(data);
+                if (data === 0) {
+                    fetchData();
+                    break; 
+                }
+            } catch (error) {
+                console.log("Fetch Error:", error.message);
+                break;
+            }
+            await sleep(10000);
+            await sleep(10000);
+        }
+    }
+
+    const Get_Status = async () => {
+        try {
+            const response = await fetch(`https://backend-toc.onrender.com/status`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+            setStatus(data);
+            if (dataM.length === 0) {
+                fetchData();
+            if(data === 1){
+                Cheack_Status()
+            }
+            }
+        } catch (error) {
+            console.log("Fetch Error:", error.message);
+        }
+    };
 
     useEffect(() => {
         Get_Status();
@@ -93,46 +135,6 @@ function DataList() {
         }
     };
 
-    const Get_Status = async () => {
-        try {
-            const response = await fetch(`https://backend-toc.onrender.com/status`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
-            }
-            const data = await response.json();
-            setStatus(data);
-            if (dataM.length === 0) {
-                fetchData();
-            if(data === 1){
-                Cheack_Status()
-            }
-            }
-        } catch (error) {
-            console.log("Fetch Error:", error.message);
-        }
-    };
-
-    const Cheack_Status = async() => {
-        while(status === 0) {
-            try {
-                const response = await fetch(`https://backend-toc.onrender.com/status`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                const data = await response.json(); 
-                setStatus(data);
-                if (data === 0) {
-                    fetchData();
-                    break; 
-                }
-            } catch (error) {
-                console.log("Fetch Error:", error.message);
-                break;
-            }
-            await sleep(10000);
-            await sleep(10000);
-        }
-    }
 
     const Show_Status = () => {
         if (status === 0) {
@@ -197,7 +199,8 @@ function DataList() {
                 <div className="card-container">
                     {currentItems.map(item => (
                         <div key={item.Id} className="card" onClick={() => handleClick(item)}>
-                            <img src={item["_Movie__url_picture"]} alt={item._Movie__title} className="card-image" />
+                            <ImageLoader url={item["_Movie__url_picture"]} title={item._Movie__title} />
+                            {/* <img src={item["_Movie__url_picture"]} alt={item._Movie__title} className="card-image" /> */}
                             <div className="card-content">
                                 <h4><b>{item._Movie__title}</b></h4>
                                 <p><strong>Score:</strong> {item._Movie__score}⭐</p>
