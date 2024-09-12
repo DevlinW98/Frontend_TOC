@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ImageLoader from './Component/image_loader';
+import Card from './Component/card';
 
 function DataList() {
     const [dataM, setData] = useState([]);
@@ -198,19 +198,19 @@ function DataList() {
             {filteredData.length > 0 ? (
                 <div className="card-container">
                     {currentItems.map(item => (
-                        <div key={item.Id} className="card" onClick={() => handleClick(item)}>
-                            <ImageLoader url={item["_Movie__url_picture"]} title={item._Movie__title} />
-                            {/* <img src={item["_Movie__url_picture"]} alt={item._Movie__title} className="card-image" /> */}
-                            <div className="card-content">
-                                <h4><b>{item._Movie__title}</b></h4>
-                                <p><strong>Score:</strong> {item._Movie__score}⭐</p>
-                            </div>
-                        </div>
+                        <Card item={item} onClick={() => handleClick(item)} />
+                        // <div key={item.Id} className="card" onClick={() => handleClick(item)}>
+                        //     <img src={item["_Movie__url_picture"]} alt={item._Movie__title} className="card-image" />
+                        //     <div className="card-content">
+                        //         <h4><b>{item._Movie__title}</b></h4>
+                        //         <p><strong>Score:</strong> {item._Movie__score}⭐</p>
+                        //     </div>
+                        // </div>
                     ))}
                 </div>
-            ) : (
+            ) : dataM.length > 0 ? (
                 <p>No data found</p>
-            )}
+            ) : <div className='spinner-wrapper'> <span class="spinner" /> </div>}
             {selectedItem && (
                 <div className="popup-overlay" onClick={handleClosePopup}>
                     <div className="popup-content" onClick={(e) => e.stopPropagation()}>
