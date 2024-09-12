@@ -154,3 +154,30 @@ code {
   background-color: #555; /* Darker background for disabled buttons */
   color: #999; /* Lighter text color for disabled buttons */
 }
+
+.spinner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #f5c518;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+} 
