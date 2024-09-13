@@ -183,8 +183,10 @@ function DataList() {
                     onChange={handleChange}
                     className="navbar-search"
                 />
-                <button onClick={Scraping}>Scraping</button>
-                <button onClick={onclick_download_button}>Download</button>
+                <div className='ButtonZone'>
+                    <a onClick={Scraping} style={{cursor : "pointer" , paddingRight :"10px"}}><img src="https://cdn.discordapp.com/attachments/1260428118360064072/1284194331502182452/iconmonstr-synchronization-24-240.png?ex=66e5beab&is=66e46d2b&hm=45d732229ad9437dd094c1022835c33e1884a2441e781a0f241db4731bbd1973&" alt="Image" style={{width : "40px", height : "40px"}}></img></a>
+                    <a onClick={onclick_download_button} style={{cursor : "pointer", paddingTop :"5px"}}><img src="https://cdn.discordapp.com/attachments/1260428118360064072/1284194331799982090/iconmonstr-download-19-240.png?ex=66e5beab&is=66e46d2b&hm=421b112f856637d5a13265de7baa356c4d38553a9149c055066340fe6d220908&" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
+                </div>
                 
             </div>
             <Show_Status />
@@ -210,24 +212,73 @@ function DataList() {
                 </div>
             ) : dataM.length > 0 ? (
                 <p>No data found</p>
-            ) : <div className='spinner-wrapper'> <span class="spinner" /> </div>}
+            ) : 
+            <div className='spinner-wrapper'> <span class="spinner" /> </div>}
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                itemsPerPage={itemsPerPage}
+                onItemsPerPageChange={handleItemsPerPageChange}
+                onPageChange={handlePageChange}
+            />
             {selectedItem && (
                 <div className="popup-overlay" onClick={handleClosePopup}>
                     <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-                        <h2>{selectedItem._Movie__title}</h2>
-                        <p><strong>Duration:</strong> {selectedItem._Movie__duration}</p>
-                        <p><strong>Director:</strong> {selectedItem._Movie__director}</p>
-                        <p><strong>Genre:</strong> {selectedItem._Movie__genre}</p>
-                        <p><strong>Description:</strong> {selectedItem._Movie__description}</p>
-                        <button onClick={handleClosePopup}>Close</button>
+                    <div className='popup-title'>
+                        <h2 >{selectedItem._Movie__title}</h2>
+                    </div>
+                    <div className='rating-container'>
+                        <h2 className='rating-score'>⭐{selectedItem._Movie__score}/10</h2>
+                        <h5>RATING</h5>
+                    </div>
+                    
+                    <div className='popup-content-contenner'>
+                        <img src={selectedItem._Movie__url_picture} alt={selectedItem._Movie__title} className="pop_img" />
+                        <div className="popup-text-content">
+
+                            <h3><strong>Duration:</strong></h3>
+                            <p>{selectedItem._Movie__duration}</p>
+                         
+                            <h3><strong>Director:</strong> </h3>
+                            <p>{selectedItem._Movie__director}</p>
+      
+                            <h3><strong>Genre:</strong></h3>
+                            <p>{selectedItem._Movie__genre}</p>        
+                            <h4><strong>Description:</strong> {selectedItem._Movie__description}</h4>
+                        </div>
+                    </div>
+                    
+                    <a class="close" onClick={handleClosePopup}></a>
                     </div>
                 </div>
             )}
+            <footer className="footer">
+                <p>&copy; อยากใส่อะไรก็ใส่</p>
+            </footer>
         </div>
     );
 }
 
 const PaginationControls = ({ currentPage, totalPages, itemsPerPage, onItemsPerPageChange, onPageChange }) => {
+    const maxPageDisplay = 3; // จำนวนหน้าที่จะแสดง
+    const delta = 1; // จำนวนหน้าที่แสดงก่อนและหลังหน้า active
+
+    // คำนวณขอบเขตของหน้าที่จะแสดง
+    let startPage = Math.max(1, currentPage - delta);
+    let endPage = Math.min(totalPages, currentPage + delta);
+
+    // ตรวจสอบกรณีที่จำนวนน้อยกว่า 3 หน้า
+    if (totalPages <= maxPageDisplay) {
+        startPage = 1;
+        endPage = totalPages;
+    } else {
+        // ปรับขอบเขตเมื่อหน้า active อยู่ใกล้เริ่มต้นหรือปลาย
+        if (currentPage <= delta) {
+            endPage = maxPageDisplay;
+        } else if (currentPage + delta >= totalPages) {
+            startPage = totalPages - maxPageDisplay + 1;
+        }
+    }
     return (
         <div className="pagination-controls">
             <select value={itemsPerPage} onChange={onItemsPerPageChange}>
@@ -244,15 +295,34 @@ const PaginationControls = ({ currentPage, totalPages, itemsPerPage, onItemsPerP
                 >
                     Previous
                 </button>
-                {[...Array(totalPages).keys()].map((i) => (
-                    <button
-                        key={i}
-                        className={i + 1 === currentPage ? 'active' : ''}
-                        onClick={() => onPageChange(i + 1)}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
+                {startPage > 1 && (
+                    <>
+                        <button onClick={() => onPageChange(1)}>1</button>
+                        {startPage > 2 && <span className="paginationspan">...</span>}
+                    </>
+                )}
+
+                {[...Array(endPage - startPage + 1).keys()].map((i) => {
+                    const pageNumber = startPage + i;
+                    return (
+                        <button
+                            key={pageNumber}
+                            className={pageNumber === currentPage ? 'active' : ''}
+                            onClick={() => onPageChange(pageNumber)}
+                        >
+                            {pageNumber}
+                        </button>
+                    );
+                })}
+
+                {endPage < totalPages && (
+                    <>
+                        {endPage < totalPages - 1 && <span className="paginationspan">...</span>}
+                        <button onClick={() => onPageChange(totalPages)}>
+                            {totalPages}
+                        </button>
+                    </>
+                )}
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
