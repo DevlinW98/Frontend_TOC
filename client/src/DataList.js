@@ -138,9 +138,9 @@ function DataList() {
 
     const Show_Status = () => {
         if (status === 0) {
-            return <p style={{ color: "white" }}>Not Scraping</p>;
+            
         } else if (status === 1) {
-            return <p style={{ color: "white" }}>Scraping</p>;
+            return <div className='spinner-wrapper2'> <span class="spinner" /> </div>
         }
         return null;
     };
