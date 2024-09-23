@@ -184,8 +184,8 @@ function DataList() {
                     className="navbar-search"
                 />
                 <div className='ButtonZone'>
-                    <a onClick={Scraping} style={{cursor : "pointer" , paddingRight :"10px"}}><img src="https://cdn.discordapp.com/attachments/1260428118360064072/1284194331502182452/iconmonstr-synchronization-24-240.png?ex=66e5beab&is=66e46d2b&hm=45d732229ad9437dd094c1022835c33e1884a2441e781a0f241db4731bbd1973&" alt="Image" style={{width : "40px", height : "40px"}}></img></a>
-                    <a onClick={onclick_download_button} style={{cursor : "pointer", paddingTop :"5px"}}><img src="https://cdn.discordapp.com/attachments/1260428118360064072/1284194331799982090/iconmonstr-download-19-240.png?ex=66e5beab&is=66e46d2b&hm=421b112f856637d5a13265de7baa356c4d38553a9149c055066340fe6d220908&" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
+                    <a onClick={Scraping} style={{cursor : "pointer" , paddingRight :"10px"}}><img src="/img/iconmonstr-synchronization-24-240.png" alt="Image" style={{width : "40px", height : "40px"}}></img></a>
+                    <a onClick={onclick_download_button} style={{cursor : "pointer", paddingTop :"5px"}}><img src="/img/iconmonstr-download-19-240.png" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
                 </div>
                 
             </div>
