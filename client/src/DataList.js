@@ -185,7 +185,8 @@ function DataList() {
                 />
                 <div className='ButtonZone'>
                     <a onClick={Scraping} style={{cursor : "pointer" , paddingRight :"10px"}}><img src="/img/iconmonstr-synchronization-24-240.png" alt="Image" style={{width : "40px", height : "40px"}}></img></a>
-                    <a onClick={onclick_download_button} style={{cursor : "pointer", paddingTop :"5px"}}><img src="/img/iconmonstr-download-19-240.png" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
+                    <a onClick={onclick_download_button} style={{cursor : "pointer", paddingTop :"5px" ,paddingRight :"10px"}}><img src="/img/iconmonstr-download-19-240.png" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
+                    <a href='/SourceCode' style={{cursor : "pointer", paddingTop :"5px"}}><img src="/img/page-source-code-icon.png" alt="Image" style={{width : "30px", height : "30px"}}></img></a>
                 </div>
                 
             </div>
